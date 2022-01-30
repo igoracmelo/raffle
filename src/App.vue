@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <Cursor
+      v-for="cursor of cursors"
+      :key="cursor.id"
+      :x="cursor.x"
+      :y="cursor.y"
+    />
     <div class="header">
       <input
         v-model="pricePerUnit"
@@ -41,12 +47,43 @@
 <script>
 import Raffle from "./components/Raffle.vue";
 import Buyer from "./components/Buyer.vue";
+import Cursor from "./components/Cursor.vue";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:3000/");
 
 export default {
   name: "App",
   components: {
     Raffle,
     Buyer,
+    Cursor,
+  },
+
+  created() {
+    window.onmousemove = (e) => {
+      socket.emit("mousemove", [e.clientX, e.clientY]);
+    };
+
+    socket.on("join", (id) => {
+      this.cursors.push({ id, x: 100, y: 150 });
+    });
+
+    socket.on("mousemove", (id, [x, y]) => {
+      let cursor = this.cursors.find((cursor) => cursor.id === id);
+
+      if (!cursor) {
+        this.cursors.push({ id, x, y });
+        return;
+      }
+
+      cursor.x = x;
+      cursor.y = y;
+    });
+
+    socket.on("left", (id) => {
+      this.cursors = this.cursors.filter((c) => c.id !== id);
+    });
   },
 
   data() {
@@ -63,6 +100,7 @@ export default {
       raffles,
       pricePerUnit: "",
       ownerName: "",
+      cursors: [],
     };
   },
 
@@ -147,10 +185,10 @@ export default {
 
 .buyers {
   font-size: 17px;
-  display: grid;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
 }
 
 .input {
