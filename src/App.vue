@@ -1,117 +1,107 @@
 <template>
   <div class="container">
     <div class="header">
-      <!-- <span>Selecione rifas para poder atribuir a alguém.</span> -->
-      <input v-model="pricePerUnit" class="input" type="text" placeholder="Valor unitário" />
+      <input
+        v-model="pricePerUnit"
+        class="input"
+        type="text"
+        placeholder="Valor unitário"
+      />
       <span v-if="selected">
-        <b>{{ selected.length }}</b> selecionadas = R$ <b>{{ totalPrice.toFixed(2) }}</b>
+        <b>{{ selected.length }}</b> selecionadas = R$
+        <b>{{ totalPrice.toFixed(2) }}</b>
       </span>
       <input v-model="ownerName" class="input" type="text" placeholder="Nome" />
-      <button class="btn" :disabled="!selected.length" @click="assign">Atribuir</button>
+      <button class="btn" :disabled="!selected.length" @click="assign">
+        Atribuir
+      </button>
     </div>
     <div class="raffles">
-      <Raffle v-for="raffle in raffles"
+      <Raffle
+        v-for="raffle in raffles"
         :key="raffle.number"
         :number="raffle.number"
         v-model:isSelected="raffle.isSelected"
         v-model:owner="raffle.owner"
       />
-      <!-- <Raffle :number="1" />
-      <Raffle :number="2" :owner="{ name: 'zezin' }" />
-      <Raffle :number="3" :owner="{ name: 'mariazinha' }" />
-      <Raffle :number="4" /> -->
     </div>
     <span class="title" v-if="buyersInfo.length">Compradores</span>
     <div class="buyers">
-      <Buyer v-for="[name, count] of buyersInfo"
+      <Buyer
+        v-for="[name, count] of buyersInfo"
         :key="name"
         :name="name"
         :count="count"
         :pricePerUnit="pricePerUnit"
       />
-      <!-- <div class="buyer" v-for="[name, count] of buyersInfo" :key="name">
-        <div class="name">{{ name }}</div>
-        <div class="units"><b>{{ count }}</b> unidades</div>
-        <div class="owes">R$ {{ (count * pricePerUnit).toFixed(2) }}</div>
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import Raffle from './components/Raffle.vue'
-import Buyer from './components/Buyer.vue'
+import Raffle from "./components/Raffle.vue";
+import Buyer from "./components/Buyer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Raffle,
-    Buyer
+    Buyer,
   },
 
-  data () {
-    const raffles = []
+  data() {
+    const raffles = [];
 
     for (let i = 1; i <= 50; i++) {
-      // const owner = Math.random() > 0.8 ? { name: 'rato borrachudo' } : null
-
       raffles.push({
         number: i,
-        // owner,
-        isSelected: false
-      })
+        isSelected: false,
+      });
     }
 
     return {
       raffles,
-      pricePerUnit: '',
-      ownerName: ''
-    }
+      pricePerUnit: "",
+      ownerName: "",
+    };
   },
 
   methods: {
-    assign () {
-      this.selected.forEach(raffle => {
-        raffle.owner = { name: this.ownerName }
-        raffle.isSelected = false
-      })
-    }
+    assign() {
+      this.selected.forEach((raffle) => {
+        raffle.owner = { name: this.ownerName };
+        raffle.isSelected = false;
+      });
+    },
   },
 
   computed: {
-    selected () {
-      // eslint-disable-next-line no-debugger
-      // debugger
-      return this.raffles.filter(raffle => raffle.isSelected)
+    selected() {
+      return this.raffles.filter((raffle) => raffle.isSelected);
     },
 
-    buyersInfo () {
-      let counter = {}
+    buyersInfo() {
+      let counter = {};
 
       this.raffles
-        .filter(raffle => raffle.owner)
-        .map(raffle => raffle.owner.name)
-        .forEach(name => {
-          counter[name] = counter[name] || 0 
-          counter[name] += 1
-        })
-        
-      console.log(counter);
-      return Object.entries(counter).sort((a, b) => b[1] - a[1])
-      // return counter
+        .filter((raffle) => raffle.owner)
+        .map((raffle) => raffle.owner.name)
+        .forEach((name) => {
+          counter[name] = counter[name] || 0;
+          counter[name] += 1;
+        });
+
+      return Object.entries(counter).sort((a, b) => b[1] - a[1]);
     },
 
-    totalPrice () {
-      return this.selected.length * this.pricePerUnit
-    }
-  }
-}
+    totalPrice() {
+      return this.selected.length * this.pricePerUnit;
+    },
+  },
+};
 </script>
 
 <style>
-/* body {
-  } */
-
 * {
   margin: 0;
   padding: 0;
@@ -135,9 +125,6 @@ export default {
 }
 
 .raffles {
-  /* display: flex;
-  gap: 15px; */
-
   display: grid;
   grid-gap: 7px;
   grid-template-columns: repeat(10, 110px);
@@ -146,7 +133,6 @@ export default {
 .header {
   display: flex;
   height: 70px;
-  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
   font-size: 20px;
@@ -160,10 +146,8 @@ export default {
 }
 
 .buyers {
-  /* margin-top: 50px; */
   font-size: 17px;
   display: grid;
-  /* grid-template-columns: repeat(auto-fill, minmax(150px, 250px)); */
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -180,7 +164,6 @@ export default {
 }
 
 .btn {
-  /* text-transform: uppercase; */
   width: 150px;
   font-size: 16px;
   font-weight: bold;

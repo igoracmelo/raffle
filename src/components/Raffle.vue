@@ -1,8 +1,13 @@
 <template>
-  <div class="raffle" :class="computedClasses" :style="computedStyle" @click="onClick" @dblclick="onDoubleClick">
+  <div
+    class="raffle"
+    :class="computedClasses"
+    :style="computedStyle"
+    @click="onClick"
+    @dblclick="onDoubleClick"
+  >
     <span class="number">{{ number }}</span>
     <span v-if="owner">{{ owner.name }}</span>
-    <!-- <span v-if="timeoutToUnlock">{{ timeoutToUnlock }} seconds</span> -->
   </div>
 </template>
 
@@ -11,113 +16,65 @@ export default {
   props: {
     number: Number,
     owner: Object,
-    // value: Boolean
-    isSelected: Boolean
-    // intervalToUnlock: Number
+    isSelected: Boolean,
   },
 
   data() {
     return {
       colors: [
-        '#be96ef',
-        '#dd92d3',
-        '#dabf88',
-        '#e8bdb4',
-        '#ade6b1',
-        '#addce6',
-        '#e2a3ae',
-        '#91d57e',
-        '#97cff0',
-        '#f0d996',
+        "#be96ef",
+        "#dd92d3",
+        "#dabf88",
+        "#e8bdb4",
+        "#ade6b1",
+        "#addce6",
+        "#e2a3ae",
+        "#91d57e",
+        "#97cff0",
+        "#f0d996",
       ],
-
-      // isSelected: false
-      // timeoutId: null,
-      // number: 1,
-      // owner: { name: 'Giselle Cristelle' },
-      // timeoutToUnlock: 0,
-      // status: 'BOUGHT' // computed?
-    }
+    };
   },
 
   methods: {
-    onClick () {
-      if (this.status === 'AVAILABLE') {
-        this.$emit('update:isSelected', !this.isSelected)
+    onClick() {
+      if (this.status === "AVAILABLE") {
+        this.$emit("update:isSelected", !this.isSelected);
       }
     },
 
-    onDoubleClick () {
-      if (this.status === 'BOUGHT') {
-        this.$emit('update:isSelected', false)
-        this.$emit('update:owner', null)
+    onDoubleClick() {
+      if (this.status === "BOUGHT") {
+        this.$emit("update:isSelected", false);
+        this.$emit("update:owner", null);
       }
-    }
-    // startTimeout() {
-    //   if (!this.timeoutToUnlock) {
-    //     return
-    //   }
-    //   this.timeoutId = setInterval(() => {
-    //     if (this.timeoutToUnlock <= 0) {
-    //       this.status = 'AVAILABLE'
-    //       return
-    //     }
-    //     this.status = 'LOCKED'
-    //     this.timeoutToUnlock -= 1
-    //   }, 1000)
-    // }
+    },
   },
 
   computed: {
-    status () {
+    status() {
       if (this.owner) {
-        return 'BOUGHT'
+        return "BOUGHT";
       }
-        // if (this.intervalToUnlock) {
-        //   return 'LOCKED'
-        // }
-      return 'AVAILABLE'
+      return "AVAILABLE";
     },
 
-    computedStyle () {
-      // if (true !== 'true')
-      return { backgroundColor: this.colors[this.number % 10] }
-      // if (!this.status === 'BOUGHT') {
-      // }
-
-      // return {}
+    computedStyle() {
+      return { backgroundColor: this.colors[this.number % 10] };
     },
 
-    computedClasses () {
+    computedClasses() {
       return {
-        bought: this.status === 'BOUGHT',
-        selected: this.isSelected
-      }
+        bought: this.status === "BOUGHT",
+        selected: this.isSelected,
+      };
     },
-
-    // isSelected () {
-    //   // console.log(this.value)
-    //   return this.value || false
-    // }
-
-    // isAvailable() {
-    //   return this.status === 'AVAILABLE'
-    // },
-
-    // isLocked() {
-    //   return this.status === 'LOCKED'
-    // },
-
-    // isBought() {
-    //   return this.status === 'BOUGHT'
-    // }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
 .raffle {
-  /* width: 110px; */
   height: 110px;
   padding: 15px;
   box-shadow: 0 2px 7px #0003;
@@ -125,30 +82,20 @@ export default {
   flex-direction: column;
   gap: 10px;
   justify-content: center;
-  /* align-items: center; */
-  /* background-color: #0f02; */
   cursor: pointer;
   border-radius: 5px;
   user-select: none;
   text-align: center;
 }
 
-
-/* .raffle.available {
-  background-color: #0f02;
-} */
-/* .raffle.locked {
-  opacity: 0.5;
-  background-color: #ff03;
-} */
 .raffle.selected {
-  box-shadow: 0 0 4px 3px  #000a;
+  box-shadow: 0 0 4px 3px #000a;
 }
 
 .raffle.bought {
   opacity: 0.4;
   background-color: #0005 !important;
-  cursor: not-allowed
+  cursor: not-allowed;
 }
 
 .raffle .number {

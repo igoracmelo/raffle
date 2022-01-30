@@ -1,19 +1,21 @@
 <template>
-    <div class="buyer">
-        <div class="name">{{ name }}</div>
-        <div class="units"><b>{{ count }}</b> unidades</div>
-        <div class="owes">R$ {{ (count * pricePerUnit).toFixed(2) }}</div>
+  <div class="buyer">
+    <div class="name">{{ name }}</div>
+    <div class="units">
+      <b>{{ count }}</b> unidades
     </div>
+    <div class="owes">R$ {{ (count * pricePerUnit).toFixed(2) }}</div>
+  </div>
 </template>
 
 <script>
 export default {
-    props: {
-        name: String,
-        count: Number,
-        pricePerUnit: Number
-    }
-}
+  props: {
+    name: String,
+    count: Number,
+    pricePerUnit: Number,
+  },
+};
 </script>
 
 <style scoped>
