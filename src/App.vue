@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 <template>
   <div class="container">
     <div class="header">
@@ -22,23 +21,32 @@
       <Raffle :number="3" :owner="{ name: 'mariazinha' }" />
       <Raffle :number="4" /> -->
     </div>
+    <span class="title" v-if="buyersInfo.length">Compradores</span>
     <div class="buyers">
-      <div class="buyer" v-for="[name, count] of Object.entries(counterObject)" :key="name">
+      <Buyer v-for="[name, count] of buyersInfo"
+        :key="name"
+        :name="name"
+        :count="count"
+        :pricePerUnit="pricePerUnit"
+      />
+      <!-- <div class="buyer" v-for="[name, count] of buyersInfo" :key="name">
         <div class="name">{{ name }}</div>
         <div class="units"><b>{{ count }}</b> unidades</div>
         <div class="owes">R$ {{ (count * pricePerUnit).toFixed(2) }}</div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import Raffle from './components/Raffle.vue'
+import Buyer from './components/Buyer.vue'
 
 export default {
   name: 'App',
   components: {
-    Raffle
+    Raffle,
+    Buyer
   },
 
   data () {
@@ -77,7 +85,7 @@ export default {
       return this.raffles.filter(raffle => raffle.isSelected)
     },
 
-    counterObject () {
+    buyersInfo () {
       let counter = {}
 
       this.raffles
@@ -88,7 +96,9 @@ export default {
           counter[name] += 1
         })
         
-      return counter
+      console.log(counter);
+      return Object.entries(counter).sort((a, b) => b[1] - a[1])
+      // return counter
     },
 
     totalPrice () {
@@ -112,9 +122,12 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: grid;
+  place-items: center;
 }
 
 .container {
+  width: 1200px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -126,8 +139,8 @@ export default {
   gap: 15px; */
 
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 7px;
+  grid-template-columns: repeat(10, 110px);
 }
 
 .header {
@@ -136,38 +149,24 @@ export default {
   /* flex-direction: column; */
   justify-content: center;
   align-items: center;
-  font-size: 25px;
+  font-size: 20px;
   gap: 30px;
 }
 
+.title {
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+}
+
 .buyers {
-  margin-top: 40px;
+  /* margin-top: 50px; */
   font-size: 17px;
   display: grid;
   /* grid-template-columns: repeat(auto-fill, minmax(150px, 250px)); */
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-}
-
-.buyer {
-  padding: 20px;
-  box-shadow: 0 2px 5px 2px #0003;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  flex-basis: 200px;
-}
-
-.buyer .name {
-  font-size: 30px;
-}
-
-.buyer .owes {
-  font-size: 20px;
 }
 
 .input {

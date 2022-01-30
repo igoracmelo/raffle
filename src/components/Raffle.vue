@@ -117,20 +117,20 @@ export default {
 
 <style scoped>
 .raffle {
-  /* width: 150px; */
-  height: 120px;
+  /* width: 110px; */
+  height: 110px;
   padding: 15px;
   box-shadow: 0 2px 7px #0003;
   display: flex;
   flex-direction: column;
   gap: 10px;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   /* background-color: #0f02; */
   cursor: pointer;
   border-radius: 5px;
   user-select: none;
-  /* text-align: center; */
+  text-align: center;
 }
 
 
@@ -152,7 +152,7 @@ export default {
 }
 
 .raffle .number {
-  font-size: 40px;
+  font-size: 25px;
   font-weight: bold;
 }
 </style>
