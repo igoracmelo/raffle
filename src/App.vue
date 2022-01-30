@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 <template>
-  <div>
+  <div class="container">
     <div class="header">
       <!-- <span>Selecione rifas para poder atribuir a alguém.</span> -->
       <input v-model="pricePerUnit" class="input" type="text" placeholder="Valor unitário" />
@@ -21,6 +21,13 @@
       <Raffle :number="2" :owner="{ name: 'zezin' }" />
       <Raffle :number="3" :owner="{ name: 'mariazinha' }" />
       <Raffle :number="4" /> -->
+    </div>
+    <div class="buyers">
+      <div class="buyer" v-for="[name, count] of Object.entries(counterObject)" :key="name">
+        <div class="name">{{ name }}</div>
+        <div class="units"><b>{{ count }}</b> unidades</div>
+        <div class="owes">R$ {{ (count * pricePerUnit).toFixed(2) }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +77,20 @@ export default {
       return this.raffles.filter(raffle => raffle.isSelected)
     },
 
+    counterObject () {
+      let counter = {}
+
+      this.raffles
+        .filter(raffle => raffle.owner)
+        .map(raffle => raffle.owner.name)
+        .forEach(name => {
+          counter[name] = counter[name] || 0 
+          counter[name] += 1
+        })
+        
+      return counter
+    },
+
     totalPrice () {
       return this.selected.length * this.pricePerUnit
     }
@@ -93,6 +114,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
 .raffles {
   /* display: flex;
   gap: 15px; */
@@ -100,7 +128,6 @@ export default {
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(10, 1fr);
-  padding: 15px;
 }
 
 .header {
@@ -111,6 +138,36 @@ export default {
   align-items: center;
   font-size: 25px;
   gap: 30px;
+}
+
+.buyers {
+  margin-top: 40px;
+  font-size: 17px;
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(150px, 250px)); */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.buyer {
+  padding: 20px;
+  box-shadow: 0 2px 5px 2px #0003;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  flex-basis: 200px;
+}
+
+.buyer .name {
+  font-size: 30px;
+}
+
+.buyer .owes {
+  font-size: 20px;
 }
 
 .input {
