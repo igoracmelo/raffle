@@ -11,7 +11,8 @@ export default {
   props: {
     number: Number,
     owner: Object,
-    value: Boolean
+    // value: Boolean
+    isSelected: Boolean
     // intervalToUnlock: Number
   },
 
@@ -39,14 +40,10 @@ export default {
     }
   },
 
-  // created() {
-  //   this.startTimeout()
-  // },
-
   methods: {
     onClick () {
       if (this.status === 'AVAILABLE') {
-        this.$emit('input', !this.isSelected)
+        this.$emit('update:isSelected', !this.isSelected)
       }
     }
     // startTimeout() {
@@ -85,12 +82,16 @@ export default {
     },
 
     computedClasses () {
-      return { bought: this.status === 'BOUGHT', selected: this.isSelected }
+      return {
+        bought: this.status === 'BOUGHT',
+        selected: this.isSelected
+      }
     },
 
-    isSelected () {
-      return this.value || false
-    }
+    // isSelected () {
+    //   // console.log(this.value)
+    //   return this.value || false
+    // }
 
     // isAvailable() {
     //   return this.status === 'AVAILABLE'
@@ -110,7 +111,7 @@ export default {
 <style scoped>
 .raffle {
   /* width: 150px; */
-  height: 130px;
+  height: 120px;
   padding: 15px;
   box-shadow: 0 2px 7px #0003;
   display: flex;
@@ -133,7 +134,7 @@ export default {
   background-color: #ff03;
 } */
 .raffle.selected {
-  box-shadow: 0 0 4px 3px  #00aa;
+  box-shadow: 0 0 4px 3px  #000a;
 }
 
 .raffle.bought {

@@ -2,12 +2,12 @@
 <template>
   <div>
     <div class="header">
-      <span>Selecione rifas para poder atribuir a alguém.</span>
-      <span v-if="selected.length">{{ selected.length }} selecionadas.</span>
+      <!-- <span>Selecione rifas para poder atribuir a alguém.</span> -->
+      <span v-if="selected">{{ selected.length }} selecionadas = R$ {{ totalPrice.toFixed(2) }}</span>
     </div>
     <div class="raffles">
       <Raffle v-for="raffle in raffles"
-        v-model="raffle.isSelected"
+        v-model:isSelected="raffle.isSelected"
         :key="raffle.number"
         :number="raffle.number"
         :owner="raffle.owner"
@@ -38,12 +38,13 @@ export default {
       raffles.push({
         number: i,
         owner,
-        isSelected: true
+        isSelected: false
       })
     }
 
     return {
       raffles,
+      pricePerUnit: 3.5
     }
   },
 
@@ -52,6 +53,10 @@ export default {
       // eslint-disable-next-line no-debugger
       // debugger
       return this.raffles.filter(raffle => raffle.isSelected)
+    },
+
+    totalPrice () {
+      return this.selected.length * this.pricePerUnit
     }
   }
 }
