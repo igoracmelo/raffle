@@ -1,5 +1,5 @@
 <template>
-  <div class="raffle" :class="computedClasses" :style="computedStyle" @click="onClick">
+  <div class="raffle" :class="computedClasses" :style="computedStyle" @click="onClick" @dblclick="onDoubleClick">
     <span class="number">{{ number }}</span>
     <span v-if="owner">{{ owner.name }}</span>
     <!-- <span v-if="timeoutToUnlock">{{ timeoutToUnlock }} seconds</span> -->
@@ -44,6 +44,13 @@ export default {
     onClick () {
       if (this.status === 'AVAILABLE') {
         this.$emit('update:isSelected', !this.isSelected)
+      }
+    },
+
+    onDoubleClick () {
+      if (this.status === 'BOUGHT') {
+        this.$emit('update:isSelected', false)
+        this.$emit('update:owner', null)
       }
     }
     // startTimeout() {
@@ -122,6 +129,7 @@ export default {
   /* background-color: #0f02; */
   cursor: pointer;
   border-radius: 5px;
+  user-select: none;
   /* text-align: center; */
 }
 
