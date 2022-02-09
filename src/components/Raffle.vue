@@ -4,7 +4,6 @@
     :class="computedClasses"
     :style="computedStyle"
     @click="onClick"
-    @dblclick="onDoubleClick"
   >
     <span class="number">{{ number }}</span>
     <span v-if="owner">{{ owner.name }}</span>
@@ -21,6 +20,7 @@ export default {
 
   data() {
     return {
+      touchCount: 0,
       colors: [
         "#be96ef",
         "#dd92d3",
@@ -40,6 +40,15 @@ export default {
     onClick() {
       if (this.status === "AVAILABLE") {
         this.$emit("update:isSelected", !this.isSelected);
+      }
+      else if (this.status === "BOUGHT") {
+        setTimeout(() => {
+          this.touchCount = 0
+        }, 2000)
+        this.touchCount++
+        if (this.touchCount >= 2) {
+          this.onDoubleClick()
+        }
       }
     },
 
