@@ -61,13 +61,14 @@ export default {
   },
 
   created() {
-    window.onmousemove = (e) => {
-      socket.emit("mousemove", [e.clientX, e.clientY]);
-    };
+    let raffles = localStorage.getItem("raffles");
 
-    socket.on("join", (id) => {
-      this.cursors.push({ id, x: 100, y: 150 });
-    });
+    if (raffles) {
+      const parsedRaffles = JSON.parse(raffles)
+      if (Array.isArray(parsedRaffles)) {
+        this.raffles = parsedRaffles
+      }
+    }
 
     // window.onmousemove = (e) => {
     //   socket.emit("mousemove", [e.clientX, e.clientY]);
@@ -144,6 +145,16 @@ export default {
       return this.selected.length * this.pricePerUnit;
     },
   },
+
+  watch: {
+    raffles: {
+      deep: true,
+      handler (val) {
+        console.log(val);
+        localStorage.setItem("raffles", JSON.stringify(val));
+      }
+    }
+  }
 };
 </script>
 
