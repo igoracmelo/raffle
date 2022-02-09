@@ -48,9 +48,9 @@
 import Raffle from "./components/Raffle.vue";
 import Buyer from "./components/Buyer.vue";
 import Cursor from "./components/Cursor.vue";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
-const socket = io("http://localhost:3000/");
+// const socket = io("http://localhost:3000/");
 
 export default {
   name: "App",
@@ -69,21 +69,29 @@ export default {
       this.cursors.push({ id, x: 100, y: 150 });
     });
 
-    socket.on("mousemove", (id, [x, y]) => {
-      let cursor = this.cursors.find((cursor) => cursor.id === id);
+    // window.onmousemove = (e) => {
+    //   socket.emit("mousemove", [e.clientX, e.clientY]);
+    // };
 
-      if (!cursor) {
-        this.cursors.push({ id, x, y });
-        return;
-      }
+    // socket.on("join", (id) => {
+    //   this.cursors.push({ id, x: 100, y: 150 });
+    // });
 
-      cursor.x = x;
-      cursor.y = y;
-    });
+    // socket.on("mousemove", (id, [x, y]) => {
+    //   let cursor = this.cursors.find((cursor) => cursor.id === id);
 
-    socket.on("left", (id) => {
-      this.cursors = this.cursors.filter((c) => c.id !== id);
-    });
+    //   if (!cursor) {
+    //     this.cursors.push({ id, x, y });
+    //     return;
+    //   }
+
+    //   cursor.x = x;
+    //   cursor.y = y;
+    // });
+
+    // socket.on("left", (id) => {
+    //   this.cursors = this.cursors.filter((c) => c.id !== id);
+    // });
   },
 
   data() {
