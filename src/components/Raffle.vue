@@ -84,7 +84,6 @@ export default {
 
 <style scoped>
 .raffle {
-  height: 110px;
   padding: 15px;
   box-shadow: 0 2px 7px #0003;
   display: flex;

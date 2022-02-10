@@ -14,11 +14,11 @@
         placeholder="Valor unitário"
       />
       <span v-if="selected">
-        <b>{{ selected.length }}</b> selecionadas = R$
+        <b>{{ selected.length }}</b> rifa(s) = R$
         <b>{{ totalPrice.toFixed(2) }}</b>
       </span>
       <input v-model="ownerName" class="input" type="text" placeholder="Nome" />
-      <button class="btn" :disabled="!selected.length" @click="assign">
+      <button class="btn" :disabled="!selected.length || !ownerName" @click="assign">
         Atribuir
       </button>
     </div>
@@ -165,6 +165,10 @@ export default {
   box-sizing: border-box;
 }
 
+html, body, #app {
+  width: 100%;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -174,26 +178,47 @@ export default {
 }
 
 .container {
-  width: 1200px;
   padding: 20px;
+  width: min(950px, 100%);
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 50px;
 }
 
 .raffles {
+  width: 100%;
   display: grid;
   grid-gap: 7px;
-  grid-template-columns: repeat(10, 110px);
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-auto-rows: 80px;
 }
 
 .header {
   display: flex;
-  height: 70px;
+  width: 100%;
   justify-content: center;
-  align-items: center;
   font-size: 20px;
   gap: 30px;
+}
+
+.header > * {
+  text-align: center;
+}
+
+@media screen and (max-width: 950px) {
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .header > * {
+    flex: 1 0 40%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .header > * {
+    flex: 1 0 100%;
+  }
 }
 
 .title {
@@ -217,16 +242,16 @@ export default {
   border-bottom: 1px solid #0003;
   text-align: center;
   outline: none;
-  width: 170px;
+  min-width: 100px;
 }
 
 .btn {
-  width: 150px;
+  min-width: 80px;
   font-size: 16px;
   font-weight: bold;
   color: white;
   background-color: #5d7;
-  padding: 10px 10px;
+  padding: 10px 30px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
