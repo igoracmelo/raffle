@@ -15,33 +15,32 @@ export default {
   props: {
     number: Number,
     owner: Object,
-    isSelected: Boolean,
+    isSelected: Boolean
   },
 
-  data() {
+  data () {
     return {
       touchCount: 0,
       colors: [
-        "#be96ef",
-        "#dd92d3",
-        "#dabf88",
-        "#e8bdb4",
-        "#ade6b1",
-        "#addce6",
-        "#e2a3ae",
-        "#91d57e",
-        "#97cff0",
-        "#f0d996",
-      ],
-    };
+        '#be96ef',
+        '#dd92d3',
+        '#dabf88',
+        '#e8bdb4',
+        '#ade6b1',
+        '#addce6',
+        '#e2a3ae',
+        '#91d57e',
+        '#97cff0',
+        '#f0d996'
+      ]
+    }
   },
 
   methods: {
-    onClick() {
-      if (this.status === "AVAILABLE") {
-        this.$emit("update:isSelected", !this.isSelected);
-      }
-      else if (this.status === "BOUGHT") {
+    onClick () {
+      if (this.status === 'AVAILABLE') {
+        this.$emit('update:isSelected', !this.isSelected)
+      } else if (this.status === 'BOUGHT') {
         setTimeout(() => {
           this.touchCount = 0
         }, 2000)
@@ -52,34 +51,34 @@ export default {
       }
     },
 
-    onDoubleClick() {
-      if (this.status === "BOUGHT") {
-        this.$emit("update:isSelected", false);
-        this.$emit("update:owner", null);
+    onDoubleClick () {
+      if (this.status === 'BOUGHT') {
+        this.$emit('update:isSelected', false)
+        this.$emit('update:owner', null)
       }
-    },
+    }
   },
 
   computed: {
-    status() {
+    status () {
       if (this.owner) {
-        return "BOUGHT";
+        return 'BOUGHT'
       }
-      return "AVAILABLE";
+      return 'AVAILABLE'
     },
 
-    computedStyle() {
-      return { backgroundColor: this.colors[this.number % 10] };
+    computedStyle () {
+      return { backgroundColor: this.colors[this.number % 10] }
     },
 
-    computedClasses() {
+    computedClasses () {
       return {
-        bought: this.status === "BOUGHT",
-        selected: this.isSelected,
-      };
-    },
-  },
-};
+        bought: this.status === 'BOUGHT',
+        selected: this.isSelected
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>

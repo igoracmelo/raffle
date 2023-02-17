@@ -8,17 +8,18 @@
     />
     <div class="header">
       <input
-        v-model="pricePerUnit"
+        v-model="priceModel"
         class="input"
         type="text"
+
         placeholder="Valor unitário"
       />
       <span v-if="selected">
         <b>{{ selected.length }}</b> rifa(s) = R$
         <b>{{ totalPrice.toFixed(2) }}</b>
       </span>
-      <input v-model="ownerName" class="input" type="text" placeholder="Nome" />
-      <button class="btn" :disabled="!selected.length || !ownerName" @click="assign">
+      <input v-model="nameModel" class="input" type="text" placeholder="Nome" />
+      <button class="btn" :disabled="!selected.length || !nameModel" @click="assign">
         Atribuir
       </button>
     </div>
@@ -38,30 +39,32 @@
         :key="name"
         :name="name"
         :count="count"
-        :pricePerUnit="pricePerUnit"
+        :pricePerUnit="priceNumber"
       />
     </div>
   </div>
 </template>
 
 <script>
-import Raffle from "./components/Raffle.vue";
-import Buyer from "./components/Buyer.vue";
-import Cursor from "./components/Cursor.vue";
+import Raffle from './components/Raffle.vue'
+import Buyer from './components/Buyer.vue'
+import Cursor from './components/Cursor.vue'
 // import io from "socket.io-client";
 
 // const socket = io("http://localhost:3000/");
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Raffle,
     Buyer,
-    Cursor,
+    Cursor
   },
 
-  created() {
-    let raffles = localStorage.getItem("raffles");
+  created () {
+    const raffles = localStorage.getItem('raffles')
+    this.priceModel = localStorage.getItem('priceModel') ?? 0
+    this.nameModel = localStorage.getItem('nameModel') ?? ''
 
     if (raffles) {
       const parsedRaffles = JSON.parse(raffles)
@@ -95,67 +98,79 @@ export default {
     // });
   },
 
-  data() {
-    const raffles = [];
+  data () {
+    const raffles = []
 
     for (let i = 1; i <= 50; i++) {
       raffles.push({
         number: i,
         isSelected: false,
-      });
+        owner: null
+      })
     }
 
     return {
       raffles,
-      pricePerUnit: "",
-      ownerName: "",
-      cursors: [],
-    };
+      priceModel: '',
+      nameModel: '',
+      cursors: []
+    }
   },
 
   methods: {
-    assign() {
+    assign () {
       this.selected.forEach((raffle) => {
-        raffle.owner = { name: this.ownerName };
-        raffle.isSelected = false;
-      });
-    },
+        raffle.owner = { name: this.nameModel }
+        raffle.isSelected = false
+      })
+    }
   },
 
   computed: {
-    selected() {
-      return this.raffles.filter((raffle) => raffle.isSelected);
+    selected () {
+      return this.raffles.filter((raffle) => raffle.isSelected)
     },
 
-    buyersInfo() {
-      let counter = {};
+    buyersInfo () {
+      const counter = {}
 
       this.raffles
         .filter((raffle) => raffle.owner)
         .map((raffle) => raffle.owner.name)
         .forEach((name) => {
-          counter[name] = counter[name] || 0;
-          counter[name] += 1;
-        });
+          counter[name] = counter[name] || 0
+          counter[name] += 1
+        })
 
-      return Object.entries(counter).sort((a, b) => b[1] - a[1]);
+      return Object.entries(counter).sort((a, b) => b[1] - a[1])
     },
 
-    totalPrice() {
-      return this.selected.length * this.pricePerUnit;
+    priceNumber () {
+      return Number(this.priceModel.replace(',', '.'))
     },
+
+    totalPrice () {
+      return this.selected.length * this.priceNumber
+    }
   },
 
   watch: {
     raffles: {
       deep: true,
       handler (val) {
-        console.log(val);
-        localStorage.setItem("raffles", JSON.stringify(val));
+        localStorage.setItem('raffles', JSON.stringify(val))
       }
+    },
+
+    priceModel (val) {
+      localStorage.setItem('priceModel', val)
+    },
+
+    nameModel (val) {
+      localStorage.setItem('nameModel', val)
     }
   }
-};
+}
 </script>
 
 <style>
@@ -230,7 +245,8 @@ html, body, #app {
 .buyers {
   font-size: 17px;
   display: flex;
-  justify-content: center;
+  /* padding: 0 auto; */
+  /* justify-content: center; */
   flex-wrap: wrap;
   gap: 10px;
 }
